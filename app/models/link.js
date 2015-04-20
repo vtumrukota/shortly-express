@@ -21,3 +21,7 @@ var Link = db.Model.extend({
 });
 
 module.exports = Link;
+
+
+
+//Creates the shortened URL Link on initialize

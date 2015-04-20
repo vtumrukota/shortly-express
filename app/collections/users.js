@@ -6,3 +6,8 @@ var Users = new db.Collection();
 Users.model = User;
 
 module.exports = Users;
+
+
+
+
+//Collection of all User Models

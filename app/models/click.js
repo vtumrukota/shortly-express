@@ -10,3 +10,6 @@ var Click = db.Model.extend({
 });
 
 module.exports = Click;
+
+
+//Creating the Click Model

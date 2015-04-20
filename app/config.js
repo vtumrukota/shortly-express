@@ -47,3 +47,6 @@ db.knex.schema.hasTable('clicks').then(function(exists) {
 
 
 module.exports = db;
+
+
+//Creating the database with a table for URL's and Click's

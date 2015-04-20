@@ -53,3 +53,5 @@ Shortly.createLinkView = Backbone.View.extend({
       .removeClass('error');
   }
 });
+
+//View to render out the Links

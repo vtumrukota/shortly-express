@@ -22,3 +22,6 @@ Shortly.Router = Backbone.Router.extend({
     this.swapView(new Shortly.createLinkView());
   }
 });
+
+
+//Handling the appropriate View Render based on the URL

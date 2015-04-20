@@ -38,3 +38,8 @@ window.Shortly = Backbone.View.extend({
       .addClass('selected');
   }
 });
+
+
+
+
+//appView - Will listen to the router and adjust the path accordingly
