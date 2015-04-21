@@ -69,11 +69,33 @@ app.post('/links', function(req, res) {
       });
     }
   });
+
 });
 
 /************************************************************/
 // Write your authentication routes here
 /************************************************************/
+app.get('/signup', function(req, res){
+  res.render('signup');
+});
+
+app.get('/login', function(req, res){
+  res.render('login');
+});
+
+app.post('/signup', function(req, res){
+  var newUser = new User();
+  newUser.set('username', req.body.username);
+  newUser.set('password', req.body.password);
+
+  db.knex('users').insert({username: req.body.username, password: req.body.password});
+
+  console.log(db.knex('users').select('username', 'password').map(function(row){
+    console.dir(row);
+  }));
+
+});
+
 
 
 

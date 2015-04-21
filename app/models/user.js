@@ -3,8 +3,10 @@ var bcrypt = require('bcrypt-nodejs');
 var Promise = require('bluebird');
 
 var User = db.Model.extend({
-
-  //!!!!!!!!!!!!!!!! Might need to add properties here
+  tableName: 'users',
+  username: null,
+  password: null,
+  salt: null
 });
 
 module.exports = User;
