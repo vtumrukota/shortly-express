@@ -102,7 +102,9 @@ app.post('/signup', function(req, res){
   var username =  req.body.username;
   new User({username: username}).fetch().then(function(found){
     if(found){
-      res.send(200, found.attributes);
+      // res.send(200, found.attributes);
+      console.log('Username already exists!');
+      res.render('signup');
     } else {
       var user = new User({
         username: req.body.username,
