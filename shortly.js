@@ -84,20 +84,23 @@ app.get('/login', function(req, res){
 });
 
 app.post('/signup', function(req, res){
-  var newUser = new User();
-  newUser.set('username', req.body.username);
-  newUser.set('password', req.body.password);
+  var username =  req.body.username;
+  new User({username: username}).fetch().then(function(found){
+    if(found){
+      res.send(200, found.attributes);
+    } else {
+      var user = new User({
+        username: req.body.username,
+        password: req.body.password
+      });
 
-  db.knex('users').insert({username: req.body.username, password: req.body.password});
-
-  console.log(db.knex('users').select('username', 'password').map(function(row){
-    console.dir(row);
-  }));
-
+      user.save().then(function(newUser){
+        Users.add(newUser);
+        res.send(200, newUser);
+      });
+    }
+  });
 });
-
-
-
 
 /************************************************************/
 // Handle the wildcard route last - if all other routes fail
