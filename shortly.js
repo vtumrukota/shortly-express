@@ -83,6 +83,21 @@ app.get('/login', function(req, res){
   res.render('login');
 });
 
+app.post('/login', function(req,res){
+  var username = req.body.username;
+  var password = req.body.password;
+
+  new User({username: username, password: password}).fetch().then(function(found){
+    if(found){
+      // res.send(200, found.attributes);
+      res.render('index');
+    } else {
+      console.log('Sorry your username/password was incorrect!');
+      res.render('login');
+    }
+  });
+});
+
 app.post('/signup', function(req, res){
   var username =  req.body.username;
   new User({username: username}).fetch().then(function(found){
@@ -96,7 +111,7 @@ app.post('/signup', function(req, res){
 
       user.save().then(function(newUser){
         Users.add(newUser);
-        res.send(200, newUser);
+        res.send(201, newUser);
       });
     }
   });
