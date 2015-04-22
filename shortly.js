@@ -10,8 +10,16 @@ var User = require('./app/models/user');
 var Links = require('./app/collections/links');
 var Link = require('./app/models/link');
 var Click = require('./app/models/click');
+var session = require('express-session');
+var request = require('request');
 
 var app = express();
+  app.use(session({
+    secret: 'Anuj and Vivek',
+    resave: false,
+    saveUnitialized: true
+}));
+
 
 app.set('views', __dirname + '/views');
 app.set('view engine', 'ejs');
@@ -48,6 +56,7 @@ app.post('/links', function(req, res) {
   }
 
   new Link({ url: uri }).fetch().then(function(found) {
+
     if (found) {
       res.send(200, found.attributes);
     } else {
@@ -83,17 +92,25 @@ app.get('/login', function(req, res){
   res.render('login');
 });
 
+app.get('/logout', function(req, res){
+  req.session.destroy(function(){
+    res.render('login');
+  });
+});
+
 app.post('/login', function(req,res){
   var username = req.body.username;
   var password = req.body.password;
 
   new User({username: username, password: password}).fetch().then(function(found){
     if(found){
-      // res.send(200, found.attributes);
-      res.render('index');
+      req.session.regenerate(function(){
+        req.session.user = found;
+      });
+      res.redirect('/index');
     } else {
       console.log('Sorry your username/password was incorrect!');
-      res.render('login');
+      res.redirect('/login');
     }
   });
 });
@@ -104,7 +121,7 @@ app.post('/signup', function(req, res){
     if(found){
       // res.send(200, found.attributes);
       console.log('Username already exists!');
-      res.render('signup');
+      res.redirect('/signup');
     } else {
       var user = new User({
         username: req.body.username,
@@ -113,7 +130,11 @@ app.post('/signup', function(req, res){
 
       user.save().then(function(newUser){
         Users.add(newUser);
-        res.send(201, newUser);
+        req.session.regenerate(function(){
+          req.session.user = username;
+          res.redirect('/index');
+
+        });
       });
     }
   });
